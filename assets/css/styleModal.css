@@ -1,0 +1,133 @@
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  border-radius: 5px;
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  background: #fff;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  border-radius: 10px 10px 10px 10px;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: rgba(245, 245, 245, 0.594);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+    padding: 20px 15px 10px 15px;
+    background-color: whitw;
+    color: black;
+}
+
+.modal-body {
+     /* Allow vertical scrolling when content exceeds the height */
+    padding: 15px 10px;
+    background-color: whitesmoke;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 400px;
+    }
+  
+
+.modal-footer {
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+}
+
+#myModel {
+    display: absolute;
+    width: auto;
+    height: 13px;
+    gap: 2;
+}
+
+ /* Style for the container */
+ .container-comment {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 5px 5px 15px;
+    background-color: whitesmoke;
+    width: 899px;
+    margin: auto;
+}
+
+/* Style for the input field */
+.input-field-comment {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    background-color: whitesmoke;
+    font-family: 'Arial', sans-serif;
+    font-size: 20px;
+    color: #333;
+    outline: none;
+}
+
+/* Style for the button */
+.button-comment {
+    background-color: blueviolet;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px 5px 5px 5px;
+    cursor: pointer;
+    width: auto;
+}
+
+/* Hover effect for the button */
+.button-comment:hover {
+    background-color: #0056b3;
+}
