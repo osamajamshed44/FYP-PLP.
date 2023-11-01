@@ -69,7 +69,7 @@ if (isset($_SESSION['fullname'])) {
                             style="color: white; padding-left: 30px;">Home</a>
                         <a href="tables ofstudent.html"
                             style="color: white; padding-left: 30px;">Student Area</a>
-                        <a href="videolecture.html" style="color: white; padding-left: 30px;">Video Section</a>
+                        <a href="videolecture.php" style="color: white; padding-left: 30px;">Video Section</a>
                         <a href="../indexQ&A.php?userid=<?php echo $teacher_id; ?>" style="color: white; padding-left: 30px;">Q&A</a>
                         <a href="course.html" style="color: white; padding-left: 30px;">Courses</a>
                     </nav>

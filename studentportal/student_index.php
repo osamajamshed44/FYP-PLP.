@@ -68,7 +68,7 @@ if (isset($_SESSION['fullname'])) {
                         <a href="viewvideo.html" style="color: white; padding-left: 30px;">Video Lecture</a>
                         <a href="../indexQ&A.php?userid=<?php echo $student_id; ?>"
                             style="color: white; padding-left: 30px;">Q&A</a>
-                        <a href="viewcourse.html" style="color: white; padding-left: 30px;">Courses</a>
+                        <a href="courses.php" style="color: white; padding-left: 30px;">Courses</a>
                     </nav>
                 </div>
             </div>
@@ -111,11 +111,11 @@ if (isset($_SESSION['fullname'])) {
                             View Check
 
                         </a>
-                        <a class="nav-link" href="viewvideo.html">
+                        <a class="nav-link" href="courses.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             View Video lecture
                         </a>
-                        <a class="nav-link" href="askquestion.html">
+                        <a class="nav-link" href="../indexQ&A.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Ask Question
                         </a>
@@ -149,7 +149,7 @@ if (isset($_SESSION['fullname'])) {
 
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <a href="viewcourse.html">
+                                    <a href="viewcourse.php">
                                         <i class="fas fa-table me-1"></i>
                                         Go To Course Section
                                     </a>
@@ -183,7 +183,7 @@ if (isset($_SESSION['fullname'])) {
 
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <a href="askquestion.html">
+                                    <a href="../indexQ&A.php">
                                         <i class="fas fa-table me-1"></i>
                                         Go To Q&A Section
                                     </a>
