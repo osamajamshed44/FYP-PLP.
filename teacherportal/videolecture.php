@@ -120,8 +120,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Insert video details into your database
         include 'database.php';
 
-        $sql = "INSERT INTO `video_lectures` (`video_name`, `desc`, `program`, `thumbnail_path`, `video_uri`, `uploaded_at`, `document_url`) 
-        VALUES ('$videoName', '$description', '$program', '$thumbnailPath', '$videoId', current_timestamp(), '$documentUrl')";
+        $sql = "INSERT INTO `video_lectures` (`video_name`, `desc`, `program`, `thumbnail_path`, `video_uri`, `uploaded_at`, `document_url`, `uploaded_by`) 
+        VALUES ('$videoName', '$description', '$program', '$thumbnailPath', '$videoId', current_timestamp(), '$documentUrl','$fullname')";
 
         if (mysqli_query($conn, $sql)) {                       
         // Redirect back to the homepage after successful submission

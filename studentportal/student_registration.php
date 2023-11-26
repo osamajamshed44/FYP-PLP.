@@ -10,6 +10,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $password = $_POST["password"];
   $cpassword = $_POST["cpassword"];
   $gender = $_POST["gender"];
+  $program = $_POST["program"];
 
   $allowedDomain = "@student.bahria.edu.pk";
   if (strpos($username, $allowedDomain) === false) {
@@ -29,10 +30,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       else{
           if(($password == $cpassword)){
             $hash = password_hash($password, PASSWORD_BCRYPT);
-              $sql = "INSERT INTO `students` ( `enrollment`, `fullname`, `email`, `number`, `password`, `gender`, `date`) VALUES ('$enrollment', '$fullname', '$username', '$number', '$hash', '$gender',current_timestamp())";
+              $sql = "INSERT INTO `students` ( `enrollment`, `fullname`, `email`, `number`, `password`, `gender`, `date`,`program`) VALUES ('$enrollment', '$fullname', '$username', '$number', '$hash', '$gender',current_timestamp(),'$program')";
               $result = mysqli_query($conn, $sql);
               if ($result){
                 $showAlert = true;
+               
               }
             }
           else{
@@ -64,19 +66,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <body>
 
-<header>
-    <div class="textflowforlogin">
-      <div class="row">
-        <div style="background-color: #fff; color:blueviolet; top: 0px; position: absolute; left: 0px; right: 0px;">
-          <a style="text-decoration:none" href="../index.php">
-            <div style="margin-left: 50px; color: #7d2ae8; text-align: left;">
-            <img src="assets/images/logoside.png" style="width: 400px; align-self: center; padding-top:5px; padding-bottom:0px;" alt="Logo" class="peerlogo">
+    <header>
+        <div class="textflowforlogin">
+            <div class="row">
+                <div
+                    style="background-color: #fff; color:blueviolet; top: 0px; position: absolute; left: 0px; right: 0px;">
+                    <a style="text-decoration:none" href="../index.php">
+                        <div style="margin-left: 50px; color: #7d2ae8; text-align: left;">
+                            <img src="assets/images/logoside.png"
+                                style="width: 400px; align-self: center; padding-top:5px; padding-bottom:0px;"
+                                alt="Logo" class="peerlogo">
+                        </div>
+                    </a>
+                </div>
             </div>
-          </a>
         </div>
-      </div>
-    </div>
-  </header>
+    </header>
 
     <div class="container" style="margin: top 70px;">
         <div class="title">Registration</div>
@@ -107,6 +112,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="input-box">
                         <span class="details">Enrollment</span>
                         <input type="text" name="enrollment" placeholder="as given by department" required>
+
                     </div>
                     <div class="input-box">
                         <span class="details">Email</span>
@@ -123,6 +129,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="input-box">
                         <span class="details">Confirm Password</span>
                         <input type="password" name="cpassword" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Program</span>
+                        <input type="text" name="program" placeholder="Enter Program/Degree" required>
                     </div>
                 </div>
                 <div class="gender-details">

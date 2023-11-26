@@ -1130,6 +1130,7 @@ courses
 /* Center the text and content inside each item */
 .our-courses .owl-courses-item .item .down-content {
   text-align: center;
+  height: 220px;
 }
 
 /* Style the heading inside each item */
@@ -1176,6 +1177,7 @@ section.our-courses {
 
 .our-courses .item .down-content .info {
   padding: 25px;
+
 }
 
 .our-courses .item .down-content .info ul li {

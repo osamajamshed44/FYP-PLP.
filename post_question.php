@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $question = $_POST['question'];
     $category = $_POST['category'];
-    $privacy = $_POST['privacy'];
+    $privacy = $_POST['selectedPrivacy'];
     
     //for category id
     $sql = "SELECT * FROM `categories`"; 
@@ -29,15 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userCategory = $_SESSION['user_category'];
    
         // Now, you can use $userCategory to determine which column in the questions table to insert the user's ID.
-        if ($userCategory == 'student') {
+        if ($userCategory == 'Student') {
             $student_id = $_SESSION['student_id'];
             $teacher_id = null;
             $alumni_id = null;
-        } elseif ($userCategory == 'teacher') {
+        } elseif ($userCategory == 'Teacher') {
             $teacher_id = $_SESSION['teacher_id'];
             $student_id = null;
             $alumni_id = null;
-        } elseif ($userCategory == 'alumni') {
+        } elseif ($userCategory == 'Alumni') {
             $alumni_id = $_SESSION['alumni_id'];
             $student_id = null;
             $teacher_id = null;
@@ -49,7 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Sanitize data (prevent SQL injection)
-    $question = mysqli_real_escape_string($conn, $question);
+    $title = str_replace("<", "&lt;", $title);
+    $title = str_replace(">", "&gt;", $title); 
+    $question = str_replace("<", "&lt;", $question);
+    $question = str_replace("<", "&lt;", $question);
     $catid = mysqli_real_escape_string($conn, $catid);
     $privacy = mysqli_real_escape_string($conn, $privacy);
 
@@ -58,8 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES ('$student_id', '$teacher_id', '$alumni_id', '$question', '$catid', '$privacy', current_timestamp(), '$title')";
     
     if (mysqli_query($conn, $sql)) {
-        // Redirect back to the homepage after successful submission
-        header("Location: indexQ&A.php");
+        // JavaScript to display an alert and then redirect
+        echo "<script>alert('Question posted!!.');</script>";
+        echo "<script>window.location = 'indexQ&A.php';</script>";
         exit();
     } else {
         echo "Error: " . mysqli_error($conn);

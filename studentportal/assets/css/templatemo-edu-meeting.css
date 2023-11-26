@@ -962,6 +962,7 @@ section.upcoming-meetings .categories .main-button-red a {
 }
 
 .meeting-item .down-content {
+  height: 220px;
   background-color: aliceblue;
   padding: 30px;
   border-bottom-right-radius: 20px;
@@ -994,11 +995,11 @@ section.upcoming-meetings .categories .main-button-red a {
   color: #1f272b;
   font-weight: 600;
   display: inline-block;
-  margin-bottom: 15px;
+  margin-top: 15px;
 }
 
 .meeting-item .down-content p {
-  margin-left: 60px;
+  margin: 5px;
   color: #1f272b;
   font-size: 14px;
 }

@@ -27,15 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userCategory = $_SESSION['user_category'];
    
         // Now, you can use $userCategory to determine which column in the questions table to insert the user's ID.
-        if ($userCategory == 'student') {
+        if ($userCategory == 'Student') {
             $student_id = $_SESSION['student_id'];
             $teacher_id = null;
             $alumni_id = null;
-        } elseif ($userCategory == 'teacher') {
+        } elseif ($userCategory == 'Teacher') {
             $teacher_id = $_SESSION['teacher_id'];
             $student_id = null;
             $alumni_id = null;
-        } elseif ($userCategory == 'alumni') {
+        } elseif ($userCategory == 'Alumni') {
             $alumni_id = $_SESSION['alumni_id'];
             $student_id = null;
             $teacher_id = null;
@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Sanitize data (prevent SQL injection)
-    $cContext = mysqli_real_escape_string($conn, $cContext);
+    $cContext = str_replace("<", "&lt;", $cContext);
+    $cContext = str_replace(">", "&gt;", $cContext);
    
 
     // Insert the question into the database
@@ -56,12 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     VALUES ('$Qid','$student_id', '$teacher_id', '$alumni_id','$cContext', current_timestamp())";
     
     if (mysqli_query($conn, $sql)) {
-        // Redirect back to the homepage after successful submission
-        header("Location: indexQ&A.php");
+        // JavaScript to display an alert and then redirect
+        echo "<script>alert('Answer posted.');</script>";
+        echo "<script>window.location = 'indexQ&A.php';</script>";
         exit();
     } else {
         echo "Error: " . mysqli_error($conn);
     }
+    
 } else {
     // Handle the case when the form is not submitted
     echo "Form submission error.";

@@ -12,7 +12,22 @@ if (isset($_SESSION['fullname'])) {
     exit();
 }
 
-      
+include 'database.php';
+$video_id = $_GET['video_no'];
+$sql = "SELECT * FROM `video_lectures` where video_no = $video_id";
+$result = mysqli_query($conn, $sql);
+while($row = mysqli_fetch_assoc($result)){
+    
+    $noResult = false;
+    $video_name = $row['video_name'];
+    $video_desc = $row['desc'];
+    $video_program = $row['program'];
+    $thumbnail = $row['thumbnail_path'];
+    $video_uri = $row['video_uri'];
+    $time = $row['uploaded_at'];
+    $uploaded_by = $row['uploaded_by'];;
+
+}      
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +88,8 @@ if (isset($_SESSION['fullname'])) {
             <div class="input-group" style="  margin-right: 8px; width: 300px;">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
                     aria-describedby="btnNavbarSearch" />
-                <button class="button" style=" background-color: black; color: white; border: 20px; width: 60px; border-radius: 3px;"
+                <button class="button"
+                    style=" background-color: black; color: white; border: 20px; width: 60px; border-radius: 3px;"
                     id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
             </div>
         </form>
@@ -137,82 +153,34 @@ if (isset($_SESSION['fullname'])) {
                     </ol>
                     <div class="dashboardwork" style="border: 1px solid blueviolet;  border-radius: 20px;
                     padding: 3px;">
-
-
-
-                        <section class="meetings-page" id="meetings">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="filters">
-                                                    <ul>
-                                                        <li data-filter="*" class="active">All Courses</li>
-                                                        <li data-filter=".IT">IT</li>
-                                                        <li data-filter=".BBA">BBA</li>
-                                                        <li data-filter=".CS">CS</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="row grid">
-                                                    <?php
-                                                        include 'database.php';
-                                                        $sql = "SELECT * FROM `video_lectures` ORDER BY video_no DESC";
-                                                        $result = mysqli_query($conn, $sql);
-                                                        $i = 1;
-                                                        while($row = mysqli_fetch_assoc($result)){
-                                                            
-                                                            $noResult = false;
-                                                            $video_no = $row['video_no'];
-                                                            $video_name = $row['video_name'];
-                                                            $video_desc = $row['desc'];
-                                                            $video_program = $row['program'];
-                                                            $thumbnail = $row['thumbnail_path'];
-                                                            $video_uri = $row['video_uri'];
-                                                            $time = $row['uploaded_at'];
-                                                            $username = 'user'.$i.'';
-                                                            echo '                                   
-                                                            <div class="col-lg-4 templatemo-item-col all att '.$video_program.'">
-                                                            <div class="meeting-item">
-                                                                <div class="thumb">
-                                                                <div class="price">
-                                                                    <span>'.$time.'</span>
-                                                                </div>
-                                                                <a href="viewcourse.php?video_no='.$video_no.'"><img src="../assets/images/course-0'.$i.'.jpg" alt=""></a>
-                                                                </div>
-                                                                <div class="down-content">
-                                                                <div class="date">
-                                                                    <h6>'.$username.'<span>public</span></h6>
-                                                                </div>
-                                                                <a href="meeting-details.html"><h4>'.$video_name.'</h4></a>
-                                                                <p>'.$video_desc.'</p>
-                                                                </div>
-                                                            </div>
-                                                            </div>';
-                                                             $i++;
-
-                                                        } 
-                                                    ?>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="pagination">
-                                                    <ul>
-                                                        <li><a href="#">1</a></li>
-                                                        <li class="active"><a href="#">2</a></li>
-                                                        <li><a href="#">3</a></li>
-                                                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
+                    
+                        <div class="container mt-5">
+                            <div class="row dashboardwork" style="border: 1px solid blueviolet;  border-radius: 20px; padding: 10px;">
+                                <div class="col-md-9">
+                                    <!-- Video Player -->
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe src="https://player.vimeo.com/video/<?php echo $video_uri;?>?badge=0&amp;autopause=0&amp;quality_selector=1&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:0;left:0;width:100%;height:100%; border-radius: 15px;" title="<?php echo $video_name;?>">
+                                        </iframe>
                                     </div>
+                                    <script src="https://player.vimeo.com/api/player.js"></script>
+                                </div>
+                                <div class="col-md-3" style="margin-top: 50px;">
+                                    <!-- Video Details -->
+                                    <h3 style="color: blueviolet;"><strong><?php echo $video_name;?></strong></h3><br>
+                                    <h1><strong>Uploaded by:<br></strong> <?php echo $uploaded_by;?></h1><br>
+                                    <h1><strong>Description:</strong> <br> <?php echo $video_desc;?></h1>
                                 </div>
                             </div>
+                            <br>
+                            <!-- Embedded PDF Viewer for Reading Material -->
+                            <h3>Related Reading Material</h3>
+                            <br>
+                            <div style="border: 1px solid; margin-bottom:10px; ">
+                            <iframe src="https://docs.google.com/document/d/e/2PACX-1vS-0KNCT_kPn3nCpXsYMZXBPssTstRGlxpjHiS6sd9bJ3drPLFBCijtFFDfUzjRjAF2hFOVyns2UrqM/pub?embedded=true" style="width:100%; height:500px; " frameborder="0"></iframe>
+                                <!-- <embed src="" type="application/pdf" width="100%" height="500px"> -->
+                            </div>
 
-                        </section>
+                        </div>
 
                     </div>
                 </div>
@@ -232,9 +200,9 @@ if (isset($_SESSION['fullname'])) {
         </div>
     </div>
 
-     <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script src="assets/js/isotope.min.js"></script>
@@ -245,52 +213,7 @@ if (isset($_SESSION['fullname'])) {
     <script src="assets/js/video.js"></script>
     <script src="assets/js/slick-slider.js"></script>
     <script src="assets/js/custom.js"></script>
-    <script>
-        //according to loftblog tut
-        $('.nav li:first').addClass('active');
-
-        var showSection = function showSection(section, isAnimate) {
-          var
-          direction = section.replace(/#/, ''),
-          reqSection = $('.section').filter('[data-section="' + direction + '"]'),
-          reqSectionPos = reqSection.offset().top - 0;
-
-          if (isAnimate) {
-            $('body, html').animate({
-              scrollTop: reqSectionPos },
-            800);
-          } else {
-            $('body, html').scrollTop(reqSectionPos);
-          }
-
-        };
-
-        var checkSection = function checkSection() {
-          $('.section').each(function () {
-            var
-            $this = $(this),
-            topEdge = $this.offset().top - 80,
-            bottomEdge = topEdge + $this.height(),
-            wScroll = $(window).scrollTop();
-            if (topEdge < wScroll && bottomEdge > wScroll) {
-              var
-              currentId = $this.data('section'),
-              reqLink = $('a').filter('[href*=\\#' + currentId + ']');
-              reqLink.closest('li').addClass('active').
-              siblings().removeClass('active');
-            }
-          });
-        };
-
-        $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function (e) {
-          e.preventDefault();
-          showSection($(this).attr('href'), true);
-        });
-
-        $(window).scroll(function () {
-          checkSection();
-        });
-    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="js/scripts.js"></script>

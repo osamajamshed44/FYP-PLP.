@@ -26,12 +26,14 @@
               $login = true;
               $fullname = $row['fullname'];
               $student_id = $row['student_id'];
+              $program = $row['program'];
               session_start();
               $_SESSION['loggedin'] = true;
               $_SESSION['email'] = $username;
               $_SESSION['fullname'] = $fullname;
               $_SESSION['student_id'] = $student_id;
-              $userCategory = 'student'; 
+              $_SESSION['program'] = $program;
+              $userCategory = 'Student'; 
               // Store the user's category in a session variable
               $_SESSION['user_category'] = $userCategory;
               

@@ -11,13 +11,50 @@ if (isset($_SESSION['fullname'])) {
     $fullname = $_SESSION['fullname'];
     $userCategory = $_SESSION['user_category'];
     $student_id = $_SESSION['student_id'];
-    $program = $_SESSION['program'];
 
 } else {
     // Redirect to the login page or handle the case where the name is not set
     header("Location: student_login.php");
     exit();
 }
+
+$showError = false;
+$showAlert = false;
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+  include 'database.php';
+  $fullname = $_POST["fullname"];
+  $number = $_POST["number"];
+  $password = $_POST["password"];
+  $cpassword = $_POST["cpassword"];
+  $student_id = $_POST["student_id"];
+
+    
+    if(($password == $cpassword)){
+            $hash = password_hash($password, PASSWORD_BCRYPT);
+              $sql = "UPDATE `students` SET `fullname` = '$fullname', `number` = '$number', `password` = '$hash' WHERE `students`.`student_id` = '$student_id';";
+              $result = mysqli_query($conn, $sql);
+              if ($result){
+                $showAlert = true;
+              }
+            }
+          else{
+            $showError = "Passwords do not match";
+          }
+      }
+
+include 'database.php';
+$sql = "SELECT * FROM `students` WHERE student_id = '$student_id'";
+    $result = mysqli_query($conn, $sql);
+    while($row = mysqli_fetch_assoc($result)){
+        
+        $name = $row['fullname'];
+        $email = $row['email'];
+        $number = $row['number']; 
+        $gender = $row['gender'];
+        $enrollment = $row['enrollment'];
+    }
+
+
 ?>
 
 
@@ -49,6 +86,7 @@ if (isset($_SESSION['fullname'])) {
         <link rel="stylesheet" href="assets/css/templatemo-edu-meeting.css">
         <link rel="stylesheet" href="assets/css/owl.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <link rel="stylesheet" href="assets/css/user_profile.css">
     </head>
 
 <body class="sb-nav-fixed">
@@ -103,7 +141,7 @@ if (isset($_SESSION['fullname'])) {
             border-radius: 20px;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link active" style="color: blueviolet;" href="student_index.php">
+                        <a class="nav-link " href="student_index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
@@ -122,7 +160,7 @@ if (isset($_SESSION['fullname'])) {
                             Ask Question
                         </a>
                         <div class="sb-sidenav-menu-heading">Manage</div>
-                        <a class="nav-link" href="student_profile.php">
+                        <a class="nav-link active" style="color: blueviolet;" href="student_profile.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             My profile
                         </a>
@@ -135,124 +173,88 @@ if (isset($_SESSION['fullname'])) {
         <div class="settingsize" id="layoutSidenav_content">
             <main style="margin-right: 30px;">
                 <div class="container-fluid px-4" style=" margin: 20px;
-            border: 3px solid blueviolet;
-            height: auto;
-            border-radius: 20px; font-size: 16px; ">
+                border: 3px solid blueviolet;
+                height: auto;
+                border-radius: 20px; font-size: 16px; ">
 
                     <ol class="breadcrumb mb-4">
                         <a href="student_index.html">
-                            <h1 class="mt-4">Dashboard</h1>
+                            <h1 class="mt-4">My Profile</h1>
                         </a>
 
                     </ol>
                     <div class="dashboardwork" style="border: 1px solid blueviolet;  border-radius: 20px;
-                    padding: 3px; margin-bottom:50px;">
-                        <div class="container-fluid px-4">
-                            <h1 class="mt-4">To Course Section</h1>
-                            <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item"><a href="student_index.html">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Course</li>
-                            </ol>
+                    padding: 3px; padding-bottom:20px; margin-bottom: 20px;">
 
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <a href="viewcourse.php">
-                                        <i class="fas fa-table me-1"></i>
-                                        Go To Course Section
-                                    </a>
-                                </div>
 
-                            </div>
-                        </div>
-                        <div class="container-fluid px-4">
-                            <h1 class="mt-4">To Video Section</h1>
-                            <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item"><a href="viewvideo.html">Recomended Videos</a></li>
-                                <li class="breadcrumb-item active">Latest</li>
-                            </ol>
-
-                            <section class="meetings-page" id="meetings">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="row grid">
-                                                        <?php
-                                                        include 'database.php';
-                                                        $sql = "SELECT * FROM `video_lectures` where `program`= '$program' ORDER BY video_no DESC";
-                                                        $result = mysqli_query($conn, $sql);
-                                                        $i = 1;
-                                                        while($row = mysqli_fetch_assoc($result)){
-                                                            
-                                                            $noResult = false;
-                                                            $video_no = $row['video_no'];
-                                                            $video_name = $row['video_name'];
-                                                            $video_desc = $row['desc'];
-                                                            $video_program = $row['program'];
-                                                            $thumbnail = $row['thumbnail_path'];
-                                                            $video_uri = $row['video_uri'];
-                                                            $time = $row['uploaded_at'];
-                                                            $uploaded_by = $row['uploaded_by'];
-                                                            echo '                                   
-                                                            <div class="col-lg-3 templatemo-item-col all att '.$video_program.'">
-                                                            <div class="meeting-item" style="height: 500px;">
-                                                                <div class="thumb">
-                                                                <div class="price">
-                                                                    <span>'.$time.'</span>
-                                                                </div>
-                                                                <a href="viewvideo.php?video_no='.$video_no.'"><img src="assets/images/course-0'.$i.'.jpg" alt=""></a>
-                                                                </div>
-                                                                <div class="down-content">
-                                                                <div class="date">
-                                                                    <h6>'.$uploaded_by.'</h6>
-                                                                </div>
-                                                                <br>
-                                                                <a href="viewvideo.php?video_no='.$video_no.'"><h4>'.$video_name.'</h4></a>
-                                                                <p>'.$video_desc.'</p>
-                                                                </div>
-                                                            </div>
-                                                            </div>';
-                                                             $i++;
-
-                                                        } 
-                                                    ?>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="container mt-5">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card" style="padding: 30px;">
+                                        <div class="profile-picture">
+                                            <img src="assets/images/user_default.png" alt="Profile Picture">
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $name;?></h5>
+                                            <p class="card-text" style="white-space: nowrap;">Email:
+                                                <strong><?php echo $email;?></strong>
+                                            </p>
+                                            <p class="card-text">Enrollment: <strong><?php echo $enrollment;?></strong>
+                                            </p>
+                                            <p class="card-text">Phone: <strong><?php echo $number;?></strong></p>
+                                            <p class="card-text">Gender: <strong><?php echo $gender;?></strong></p>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
-
-                            </section>
-
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <a href="videoLecture.php">
-                                        <i class="fas fa-table me-1"></i>
-                                        See More
-                                    </a>
+                                <div class="col-md-8">
+                                    <h2>Edit Profile</h2>
+                                    <?php
+                                    if($showAlert){
+                                        echo '
+                                          <div class="alert alert-success">
+                                          <span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span> 
+                                          <strong>Success!</strong> Your Password has been updated.
+                                          </div>';
+                                        } 
+                                     if($showError){
+                                        echo '<br>
+                                        <div class="alert-error">
+                                        <span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span> 
+                                        <strong>Error!</strong> '.$showError.'
+                                        </div>';
+                                        } 
+                                    ?>
+                                    <form method="post" action="">
+                                        <div class="mb-3">
+                                            <label for="fullname" class="form-label">Fullname</label>
+                                            <input type="hidden" class="form-control" value="<?php echo $student_id?>"
+                                                id="student_id" name="student_id">
+                                            <input type="text" class="form-control" id="fullname" name="fullname"
+                                                placeholder="Full Name">
+                                                <br>
+                                            <input type="text" class="form-control" id="number" name="number"
+                                                placeholder="Number">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="password" name="password"
+                                                placeholder="New Password">
+                                            <br>
+                                            <input type="password" class="form-control" id="cpassword" name="cpassword"
+                                                placeholder="Confirm Password">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="profilePicture" class="form-label">Profile Picture</label>
+                                            <input type="file" class="form-control" id="profilePicture"
+                                                name="profilePicture">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    </form>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="container-fluid px-4">
-                            <h1 class="mt-4">To Ask Queries</h1>
-                            <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item"><a href="student_index.html">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Query</li>
-                            </ol>
 
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <a href="../indexQ&A.php">
-                                        <i class="fas fa-table me-1"></i>
-                                        Go To Q&A Section
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
                     </div>
                 </div>
             </main>

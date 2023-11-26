@@ -65,10 +65,10 @@ if (isset($_SESSION['fullname'])) {
 
 <body>
     <?php include 'database.php';?>
-        <div class="common-structure">
+    <div class="common-structure">
         <header class="main-header u-flex">
             <div class="start u-flex">
-                <a href="studentportal/student_index.php" class="logo" ><img src="assets/images/logoside.png" alt="logo"></a>
+                <a href="studentportal/student_index.php" class="logo"><img src="assets/images/logoside.png" alt="logo"></a>
 
             </div>
             <nav class="main-nav">
@@ -128,12 +128,14 @@ if (isset($_SESSION['fullname'])) {
                             <span class="text">Courses</span>
                         </a>
                     </li>
-                    <li class="common-list-item">
-                        <a class="common-list-button" href="userCategory_Q&A.php">
+                    <li class="common-list-item" style="background-color: blueviolet;">
+                        <a class="common-list-button <?php echo ($currentPage === 'userCategory_Q&A.php') ? 'active' : ''; ?>"
+                            href="userCategory_Q&A.php">
                             <span class="icon">👨&zwj;👦&zwj;👦</span>
                             <span class="text"><?php echo $userCategory; ?></span>
                         </a>
                     </li>
+
                     <li class="common-list-item">
                         <a class="common-list-button">
                             <span class="icon">🏪</span>
@@ -195,7 +197,7 @@ if (isset($_SESSION['fullname'])) {
                                 <div class="details">
                                     <p><?php echo $fullname;?></p>
                                     <div class="privacy-menu">
-                                        <span id="privacy-menu-label">Public</span>
+                                        <span id="privacy-menu-label">Private</span>
                                         <i class="fas fa-caret-down"></i>
                                         <div class="privacy-menu-options" style="display: none;">
                                             <label>
@@ -309,7 +311,21 @@ if (isset($_SESSION['fullname'])) {
     // $userid = $_GET['userid'];
     // $user_id = $_GET['student_id'];
     // $sql = "SELECT * FROM `questions` WHERE category_id=$cat_id"; 
-    $sql = "SELECT * FROM `questions` Where `privacy` like'public' ORDER BY question_id DESC";
+    if ($userCategory == 'Student'){
+        $sql = "SELECT * FROM `questions` Where `student_id` != 0 AND `privacy` LIKE 'Private' ORDER BY question_id DESC";
+    }
+    elseif($userCategory == 'Teacher'){
+        $sql = "SELECT * FROM `questions` Where `teacher_id` != 0 AND `privacy` LIKE 'Private' ORDER BY question_id DESC";  
+    }
+    elseif($userCategory == 'Alumni'){
+        $sql = "SELECT * FROM `questions` Where `alumni_id` != 0 AND `privacy` LIKE 'Private' ORDER BY question_id DESC";  
+    }
+    else {
+        // Redirect to the login page or handle the case where the name is not set
+        header("Location: indexQ&A.php");
+        exit();
+    }
+    
     $result = mysqli_query($conn, $sql);
     $noResult = true;
     $i=1;

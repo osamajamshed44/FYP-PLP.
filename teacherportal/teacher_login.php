@@ -31,7 +31,7 @@
               $_SESSION['email'] = $username;
               $_SESSION['fullname'] = $fullname;
               $_SESSION['teacher_id'] = $teacher_id;
-              $userCategory = 'teacher'; 
+              $userCategory = 'Teacher'; 
               // Store the user's category in a session variable
               $_SESSION['user_category'] = $userCategory;
               header("location: teacher_index.php");

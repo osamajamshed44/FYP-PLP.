@@ -20,7 +20,7 @@
               $_SESSION['email'] = $username;
               $_SESSION['fullname'] = $fullname;
               $_SESSION['alumni_id'] = $alumni_id;
-              $userCategory = 'alumni'; 
+              $userCategory = 'Alumni'; 
               // Store the user's category in a session variable
               $_SESSION['user_category'] = $userCategory;
               header("location: alumni_index.php");

@@ -156,7 +156,7 @@ if (isset($_SESSION['fullname'])) {
                     </ol>
                     <div class="dashboardwork"
                         style="border: 1px solid blueviolet;  border-radius: 20px;
-                    padding: 3px;">
+                    padding: 3px; margin-bottom:20px;">
                         <div class="container-fluid px-4">
                             <h1 class="mt-4">To Upload Course</h1>
                             <ol class="breadcrumb mb-4">

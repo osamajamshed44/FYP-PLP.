@@ -116,7 +116,7 @@ if (isset($_SESSION['fullname'])) {
 
             </nav>
         </div>
-        <div id="layoutSidenav_content">
+        <div id="layoutSidenav_content" style="height: 200px;">
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Dashboard</h1>
@@ -127,7 +127,7 @@ if (isset($_SESSION['fullname'])) {
 
                     </ol>
                     <div class="dashboardwork" style="border-style:outset; border-width: 5px; border-radius: 5px;
-                        padding: 3px;">
+                        padding: 3px; margin-bottom:20px;">
                         <div class="container-fluid px-4">
                             <h1 class="mt-4">To Upload Course</h1>
                             <ol class="breadcrumb mb-4">
