@@ -167,10 +167,10 @@ body{font-family:Arial; font-size:15rem; line-height:1.3; color:var(--text-color
   background-image:linear-gradient(#19aeff, #0164e1);
 }
 .search-box{
-  width:100%; padding:var(--size3); padding-inline-start:40px; border-width:0; background-color:var(--balance1); border-radius:calc(var(--height-header) / 2); transition:0.3s; -webkit-appearance:textfield;
+  width:100%; padding:var(--size3); padding-inline-start:40px; border-width:0; background-color:var(--balance1); border-radius:calc(var(--height-header) / 2); transition:0.3s; -webkit-appearance:textfield; color:white;
   &:focus{
     outline:none; background-color:var(--balance2);
-    + .icon-search{filter:grayscale(0.2) opacity(0.95);}
+    + .icon-search{filter:grayscale(0.2) opacity(0.50);}
   }
   &-wrapper{
     position:relative; flex:1;

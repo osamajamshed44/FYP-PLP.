@@ -61,9 +61,9 @@ if (isset($_SESSION['fullname'])) {
                 <div class style="padding: 20px; display: flex; align-items: center; justify-content: space-between;">
                     <nav class="main-nav">
                         <a href="student_index.php" style="color: white; padding-left: 30px;">Home</a>
-                        <a href="videoLecture.php" class="active" style="color: white; padding-left: 30px;">Video Lecture</a>
+                        <a href="videoLecture.php" class="active" style="color: yellow; padding-left: 30px;">Video Lecture</a>
                         <a href="../indexQ&A.php?userid=<?php echo $student_id; ?>" style="color: white; padding-left: 30px;">Q&A</a>
-                        <a href="viewvideo.html"  style="color: yellow; padding-left: 30px;">Courses</a>
+                        <a href="viewvideo.html"  style="color: white; padding-left: 30px;">Courses</a>
                     </nav>
                 </div>
             </div>
@@ -176,20 +176,24 @@ if (isset($_SESSION['fullname'])) {
                                                             $thumbnail = $row['thumbnail_path'];
                                                             $video_uri = $row['video_uri'];
                                                             $time = $row['uploaded_at'];
+                                                            $uploaded_at = date('F j, Y, g:i a',strtotime($time));
                                                             $uploaded_by = $row['uploaded_by'];
                                                             echo '                                   
                                                             <div class="col-lg-4 templatemo-item-col all att '.$video_program.'">
                                                             <div class="meeting-item" style="height: 500px;">
                                                                 <div class="thumb">
                                                                 <div class="price">
-                                                                    <span>'.$time.'</span>
+                                                                    <span>'.$uploaded_at.'</span>
                                                                 </div>
                                                                 <a href="viewvideo.php?video_no='.$video_no.'"><img src="assets/images/course-0'.$i.'.jpg" alt=""></a>
                                                                 </div>
                                                                 <div class="down-content">
                                                                 <div class="date">
+                                                        
                                                                     <h6>'.$uploaded_by.'</h6>
                                                                 </div>
+                                                                <br>
+                                                    
                                                                 <a href="viewvideo.php?video_no='.$video_no.'"><h4>'.$video_name.'</h4></a>
                                                                 <p>'.$video_desc.'</p>
                                                                 </div>

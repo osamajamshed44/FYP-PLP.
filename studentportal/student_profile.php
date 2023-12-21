@@ -17,30 +17,56 @@ if (isset($_SESSION['fullname'])) {
     header("Location: student_login.php");
     exit();
 }
-
+include 'database.php';
 $showError = false;
 $showAlert = false;
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-  include 'database.php';
-  $fullname = $_POST["fullname"];
-  $number = $_POST["number"];
-  $password = $_POST["password"];
-  $cpassword = $_POST["cpassword"];
-  $student_id = $_POST["student_id"];
-
-    
-    if(($password == $cpassword)){
-            $hash = password_hash($password, PASSWORD_BCRYPT);
-              $sql = "UPDATE `students` SET `fullname` = '$fullname', `number` = '$number', `password` = '$hash' WHERE `students`.`student_id` = '$student_id';";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["update_username"])) {
+        // Code to update username
+        $fullname = $_POST["fullname"];
+        $number = $_POST["number"];
+        $student_id = $_POST["student_id"];
+        $sql = "UPDATE `students` SET `fullname` = '$fullname', `number` = '$number' WHERE `students`.`student_id` = '$student_id'";
               $result = mysqli_query($conn, $sql);
               if ($result){
-                $showAlert = true;
+                $showAlert = "Username has been updated.";
+              }
+                else{
+                    $showError = "Username does not change";
+                }
+    } elseif (isset($_POST["update_password"])) {
+        // Code to update password
+        $current_password = $_POST["current_password"];
+        $password = $_POST["password"];
+        $cpassword = $_POST["cpassword"];
+        $student_id = $_POST["student_id"];
+       
+        if(($password == $cpassword)){
+            $hash = password_hash($password, PASSWORD_BCRYPT);
+            $sql = "SELECT * FROM `students` WHERE `student_id` = $student_id";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $passhash = $row['password'];
+            if(password_verify($current_password, $passhash)){
+              $sql = "UPDATE `students` SET `password` = '$hash' WHERE `students`.`student_id` = '$student_id'";
+              $result = mysqli_query($conn, $sql);
+              if ($result){
+                $showAlert = "Password has been updated.";
+
               }
             }
+            else{
+                $showError = "Current Password is incorrect.";
+            }
+        }
           else{
             $showError = "Passwords do not match";
           }
-      }
+        
+    } elseif (isset($_POST["update_profile_picture"])) {
+        // Code to update profile picture
+    }
+}
 
 include 'database.php';
 $sql = "SELECT * FROM `students` WHERE student_id = '$student_id'";
@@ -75,7 +101,7 @@ $sql = "SELECT * FROM `students` WHERE student_id = '$student_id'";
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content />
         <meta name="author" content />
-        <title>Dashboard </title>
+        <title>My Profile</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="assets/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -136,9 +162,9 @@ $sql = "SELECT * FROM `students` WHERE student_id = '$student_id'";
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion " id="sidenavAccordion">
                 <div class="sb-sidenav-menu" style="    margin: 20px;
-            border: 3px solid blueviolet;
-            border-style: outset;
-            border-radius: 20px;">
+                    border: 3px solid blueviolet;
+                    border-style: outset;
+                    border-radius: 20px;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
                         <a class="nav-link " href="student_index.php">
@@ -214,18 +240,18 @@ $sql = "SELECT * FROM `students` WHERE student_id = '$student_id'";
                                         echo '
                                           <div class="alert alert-success">
                                           <span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span> 
-                                          <strong>Success!</strong> Your Password has been updated.
+                                          <strong>Success!</strong> '.$showAlert.'
                                           </div>';
                                         } 
                                      if($showError){
                                         echo '<br>
-                                        <div class="alert-error">
+                                        <div class="alert alert-error">
                                         <span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span> 
                                         <strong>Error!</strong> '.$showError.'
                                         </div>';
                                         } 
                                     ?>
-                                    <form method="post" action="">
+                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                         <div class="mb-3">
                                             <label for="fullname" class="form-label">Fullname</label>
                                             <input type="hidden" class="form-control" value="<?php echo $student_id?>"
@@ -236,7 +262,17 @@ $sql = "SELECT * FROM `students` WHERE student_id = '$student_id'";
                                             <input type="text" class="form-control" id="number" name="number"
                                                 placeholder="Number">
                                         </div>
+                                        <button type="submit" name="update_username" class="btn btn-primary">Update Username</button>
+                                    </form> 
+                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">   
                                         <div class="mb-3">
+                                        <br>
+                                            <input type="hidden" class="form-control" value="<?php echo $student_id?>"
+                                                id="student_id" name="student_id">
+                                            <label for="current_password" class="form-label">Current Password</label>
+                                            <input type="password" class="form-control" id="password" name="current_password"
+                                                placeholder="Current Password">
+                                            <br>  
                                             <label for="password" class="form-label">Password</label>
                                             <input type="password" class="form-control" id="password" name="password"
                                                 placeholder="New Password">
@@ -244,12 +280,16 @@ $sql = "SELECT * FROM `students` WHERE student_id = '$student_id'";
                                             <input type="password" class="form-control" id="cpassword" name="cpassword"
                                                 placeholder="Confirm Password">
                                         </div>
+                                        <button type="submit" name="update_password" class="btn btn-primary">Update Password</button>
+                                    </form>
+                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">    
                                         <div class="mb-3">
+                                            <br>
                                             <label for="profilePicture" class="form-label">Profile Picture</label>
                                             <input type="file" class="form-control" id="profilePicture"
                                                 name="profilePicture">
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                                        <button type="submit" name="update_profile_picture" class="btn btn-primary">Update Profile Picture</button>
                                     </form>
                                 </div>
                             </div>

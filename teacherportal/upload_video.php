@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Insert video details into your database
         include 'database.php';
 
-        $sql = "INSERT INTO `video_lectures` (`video_no`, `video_name`, `desc`, `program`, `thumbnail_path`, `video_uri`, `uploaded_at`) 
+        $sql = "INSERT INTO `video_lectures` (`video_name`, `desc`, `program`, `thumbnail_path`, `video_uri`, `uploaded_at`) 
         VALUES ('$videoName', '$description', '$program', '$thumbnailPath', '$videoId', current_timestamp());";
 
         if (mysqli_query($conn, $sql)) {

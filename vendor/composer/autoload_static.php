@@ -65,6 +65,7 @@ class ComposerStaticInite7e7769147c5af2fc896f605cd8c87fd
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
             'Predis\\' => 7,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
         array (
@@ -169,8 +170,8 @@ class ComposerStaticInite7e7769147c5af2fc896f605cd8c87fd
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -191,6 +192,10 @@ class ComposerStaticInite7e7769147c5af2fc896f605cd8c87fd
         'Predis\\' => 
         array (
             0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

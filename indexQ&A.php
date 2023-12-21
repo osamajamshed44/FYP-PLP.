@@ -60,7 +60,11 @@ if (isset($_SESSION['fullname'])) {
     <link rel="stylesheet" href="assets/css/post/style.css">
     <link rel="stylesheet" href="assets/css/styleModal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
+    <style>
+ .hidden {
+    display: none;
+ }
+</style>
 </head>
 
 <body>
@@ -74,8 +78,21 @@ if (isset($_SESSION['fullname'])) {
             <nav class="main-nav">
                 <ul class="main-nav-list u-flex">
                     <div class="search-box-wrapper">
-                        <input type="search" class="search-box" placeholder="Search topics..">
+                        <form action="searchQA.php" method="get">
+                        <input type="search" name="search" class="search-box" placeholder="Search topics..">
                         <span class="icon-search" aria-label="hidden">🔎</span>
+                        <button type="submit" class="hidden"></button>
+                        </form>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                document.querySelector('.search-box').addEventListener('keydown', function(e) {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    document.querySelector('.hidden').click();
+                                }
+                                });
+                            });
+                        </script>
                     </div>
 
                 </ul>
@@ -85,7 +102,18 @@ if (isset($_SESSION['fullname'])) {
         <nav class="user-nav">
             <ul class="user-nav-list u-flex">
                 <li class="user-nav-item">
-                    <a class="user">
+                <?php
+                        if ($userCategory == 'Student'){
+                            echo '<a href="/studentportal/student_profile.php" class="user">';
+                        }
+                        elseif($userCategory == 'Teacher'){
+                            echo '<a href="/teacherportal/teacher_profile.php" class="user">';
+                        }
+                        elseif($userCategory == 'Alumni'){
+                            echo '<a href="/alumniportal/alumni_profile.php" class="user">';
+                        }
+                        
+                        ?>
                         <img class="user-image" src="assets/images/user_default.png" height="28" width="28" alt="">
                         <span class="user-name"><?php echo $fullname;?></span>
                     </a>
@@ -113,7 +141,18 @@ if (isset($_SESSION['fullname'])) {
                 <h2 class="section-title u-hide">User Navigation</h2>
                 <ul class="common-list">
                     <li class="common-list-item">
-                        <a href="https://www.facebook.com/eladsc/" target="_blank" class="common-list-button">
+                    <?php
+                        if ($userCategory == 'Student'){
+                            echo '<a href="studentportal/student_index.php" target="_blank" class="common-list-button">';
+                        }
+                        elseif($userCategory == 'Teacher'){
+                            echo '<a href="/teacherportal/teacher_profile.php" target="_blank" class="common-list-button">';
+                        }
+                        elseif($userCategory == 'Alumni'){
+                            echo '<a href="/alumniportal/alumni_profile.php" target="_blank" class="common-list-button">';
+                        }
+                        
+                        ?>
                             <span class="icon">
                                 <img class="user-image"
                                     src="https://assets.codepen.io/65740/internal/avatars/users/default.png" height="36"
@@ -327,18 +366,21 @@ if (isset($_SESSION['fullname'])) {
             $sql2 = "SELECT fullname FROM `students` WHERE student_id='$thread_user_id'";
             $result2 = mysqli_query($conn, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
+            $usercat = "students";
         }
         else if (!empty($row['teacher_id'])){
             $thread_user_id = $row['teacher_id']; 
             $sql2 = "SELECT fullname FROM `teachers` WHERE teacher_id='$thread_user_id'";
             $result2 = mysqli_query($conn, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
+            $usercat = "teachers";
         }
         else{
             $thread_user_id = $row['alumni_id']; 
             $sql2 = "SELECT fullname FROM `alumni` WHERE alumni_id='$thread_user_id'";
             $result2 = mysqli_query($conn, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
+            $usercat = "alumni";
         }
         //Time Format
         if (!function_exists('getTimeAgo')) {
@@ -373,17 +415,17 @@ if (isset($_SESSION['fullname'])) {
                         class="user-image" width="40" height="40" alt="">
                     <div class="common-post-info">
                         <div class="user-and-group u-flex">
-                            <a src ="assets/images/user_default.png" target="_blank">'. $row2['fullname'] . '</a>
+                            <a href="userprofile.php?userid='.$thread_user_id.'&category='.$usercat.'"  target="_blank">'. $row2['fullname'] . '</a>
                             
                         </div>
                         <div class="time-and-privacy">
-                        <time datetime="' . date('c', $threadTimestamp) . '">
-                            ' . $timeAgo . '
-                        </time>
-                        <span class="icon icon-privacy">
-                            <i class="' . ($privacy == 'Public' ? 'fas fa-globe-asia' : 'fas fa-user-friends') . '"></i>
-                        </span>
-                    </div>
+                            <time datetime="' . date('c', $threadTimestamp) . '">
+                                ' . $timeAgo . '
+                            </time>
+                            <span class="icon icon-privacy">
+                                <i class="' . ($privacy == 'Public' ? 'fas fa-globe-asia' : 'fas fa-user-friends') . '"></i>
+                            </span>
+                        </div>
 
                 </header>
                 <h4 class="mt-0"> <a class="text-dark" href="#commentModal_">'. $title . ' </a></h4>
@@ -449,12 +491,13 @@ if (isset($_SESSION['fullname'])) {
                                     <a src ="assets/images/user_default.png" style="font-size: 20px;" target="_blank">'. $title . ' <i style="font-size: 10px;">('.$row2['fullname'].')</i></a>
                                     
                                 </div>
-                                <div class="time-and-privacy"><time datetime=" '.date('c', $threadTimestamp).'">
-                                '.$timeAgo.'
-                            </time>
-                            <span class="icon icon-privacy">
-                            <i class="' . ($privacy == 'Public' ? 'fas fa-globe-asia' : 'fas fa-user-friends') . '"></i>
-                            </span>
+                                <div class="time-and-privacy">
+                                    <time datetime=" '.date('c', $threadTimestamp).'">
+                                    '.$timeAgo.'
+                                    </time>
+                                    <span class="icon icon-privacy">
+                                        <i class="' . ($privacy == 'Public' ? 'fas fa-globe-asia' : 'fas fa-user-friends') . '"></i>
+                                    </span>
                                 </div>
                             </div>
                         </header>
@@ -468,6 +511,7 @@ if (isset($_SESSION['fullname'])) {
                     <div class="modal-footer">    
                     <form method="post" action="post_comment.php">                        
                         <div class="container-comment">
+                            <a src="USERPROFILE"><img src="assets/images/user_default.png" class="user-image" width="40" height="40" alt=""></a>
                             <input type="hidden" id="Qid" name="Qid" value="'.$id.'">
                             <input class="input-field-comment" type="text" name="cContext" id="cContext" placeholder="Write comment...">
                             <button class="button-comment">Submit</button>
@@ -532,6 +576,25 @@ if (isset($_SESSION['fullname'])) {
                 };
                 xhr.send();
             }
+            
+            function toggleReplyForm(button) {
+                const replyForm = button.nextElementSibling;
+                if (replyForm.style.display === \'none\') {
+                    replyForm.style.display = \'block\';
+                } else {
+                    replyForm.style.display = \'none\';
+                }
+            }
+
+            function togglePreviousReplies(button) {
+                const prevReplies = button.nextElementSibling;
+                if (prevReplies.style.display === \'none\') {
+                    prevReplies.style.display = \'block\';
+                } else {
+                    prevReplies.style.display = \'none\';
+                }
+            }
+
         </script>
         
 ';  

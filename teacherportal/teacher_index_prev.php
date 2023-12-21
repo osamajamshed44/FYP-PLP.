@@ -116,7 +116,7 @@ if (isset($_SESSION['fullname'])) {
 
             </nav>
         </div>
-        <div id="layoutSidenav_content" style="height: 200px;">
+        <div id="layoutSidenav_content" >
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Dashboard</h1>

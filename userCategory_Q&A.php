@@ -85,7 +85,18 @@ if (isset($_SESSION['fullname'])) {
         <nav class="user-nav">
             <ul class="user-nav-list u-flex">
                 <li class="user-nav-item">
-                    <a class="user">
+                <?php
+                        if ($userCategory == 'Student'){
+                            echo '<a href="/studentportal/student_profile.php" class="user">';
+                        }
+                        elseif($userCategory == 'Teacher'){
+                            echo '<a href="/teacherportal/teacher_profile.php" class="user">';
+                        }
+                        elseif($userCategory == 'Alumni'){
+                            echo '<a href="/alumniportal/alumni_profile.php" class="user">';
+                        }
+                        
+                        ?>
                         <img class="user-image" src="assets/images/user_default.png" height="28" width="28" alt="">
                         <span class="user-name"><?php echo $fullname;?></span>
                     </a>
@@ -113,7 +124,19 @@ if (isset($_SESSION['fullname'])) {
                 <h2 class="section-title u-hide">User Navigation</h2>
                 <ul class="common-list">
                     <li class="common-list-item">
-                        <a href="https://www.facebook.com/eladsc/" target="_blank" class="common-list-button">
+                        <?php
+                        if ($userCategory == 'Student'){
+                            echo '<a href="studentportal/student_profile.php" target="_blank" class="common-list-button">';
+                        }
+                        elseif($userCategory == 'Teacher'){
+                            echo '<a href="/teacherportal/teacher_profile.php" target="_blank" class="common-list-button">';
+                        }
+                        elseif($userCategory == 'Alumni'){
+                            echo '<a href="/alumniportal/alumni_profile.php" target="_blank" class="common-list-button">';
+                        }
+                        
+                        ?>
+                        
                             <span class="icon">
                                 <img class="user-image"
                                     src="https://assets.codepen.io/65740/internal/avatars/users/default.png" height="36"
@@ -547,6 +570,24 @@ if (isset($_SESSION['fullname'])) {
                     }
                 };
                 xhr.send();
+            }
+
+            function toggleReplyForm(button) {
+                const replyForm = button.nextElementSibling;
+                if (replyForm.style.display === \'none\') {
+                    replyForm.style.display = \'block\';
+                } else {
+                    replyForm.style.display = \'none\';
+                }
+            }
+
+            function togglePreviousReplies(button) {
+                const prevReplies = button.nextElementSibling;
+                if (prevReplies.style.display === \'none\') {
+                    prevReplies.style.display = \'block\';
+                } else {
+                    prevReplies.style.display = \'none\';
+                }
             }
         </script>
         

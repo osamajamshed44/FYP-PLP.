@@ -1,53 +1,95 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require '../vendor/autoload.php';
+
+//Create an instance; passing `true` enables exceptions
+$mail = new PHPMailer(true);
+
 $showAlert = false;
 $showError = false;
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-  include 'database.php';
-  $enrollment = $_POST["enrollment"];
-  $fullname = $_POST["fullname"];
-  $username = $_POST["email"];
-  $number = $_POST["number"];
-  $password = $_POST["password"];
-  $cpassword = $_POST["cpassword"];
-  $gender = $_POST["gender"];
-  $program = $_POST["program"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    include 'database.php';
+    $enrollment = $_POST["enrollment"];
+    $fullname = $_POST["fullname"];
+    $username = $_POST["email"];
+    $number = $_POST["number"];
+    //   $password = $_POST["password"];
+    //   $cpassword = $_POST["cpassword"];
+    $gender = $_POST["gender"];
+    $program = $_POST["program"];
 
-  $allowedDomain = "@student.bahria.edu.pk";
-  if (strpos($username, $allowedDomain) === false) {
-      $showError = "Only offical email addresses from bahria are allowed.";
-    // Handle the error or redirect back to login form
-  } 
-  else {
-    // Proceed with login
-    // Check user credentials and set session if valid
-    // Redirect to the user's dashboard or protected page
-      $existSql = "Select * from `students` WHERE email = '$username'";
-      $result = mysqli_query($conn, $existSql);
-      $numExistRows = mysqli_num_rows($result);
-      if($numExistRows > 0){
-        $showError = "Email Already Exists";
-      }
-      else{
-          if(($password == $cpassword)){
+    $allowedDomain = "@student.bahria.edu.pk";
+    if (strpos($username, $allowedDomain) === false) {
+        $showError = "Only offical email addresses from bahria are allowed.";
+        // Handle the error or redirect back to login form
+    } else {
+        // Proceed with login
+        // Check user credentials and set session if valid
+        // Redirect to the user's dashboard or protected page
+        $existSql = "Select * from `students` WHERE email = '$username'";
+        $result = mysqli_query($conn, $existSql);
+        $numExistRows = mysqli_num_rows($result);
+        if ($numExistRows > 0) {
+            $showError = "Email Already Exists";
+        } else {
+            $password = password_generate(9);
+
             $hash = password_hash($password, PASSWORD_BCRYPT);
-              $sql = "INSERT INTO `students` ( `enrollment`, `fullname`, `email`, `number`, `password`, `gender`, `date`,`program`) VALUES ('$enrollment', '$fullname', '$username', '$number', '$hash', '$gender',current_timestamp(),'$program')";
-              $result = mysqli_query($conn, $sql);
-              if ($result){
+            $sql = "INSERT INTO `students` ( `enrollment`, `fullname`, `email`, `number`, `password`, `gender`, `date`,`program`) VALUES ('$enrollment', '$fullname', '$username', '$number', '$hash', '$gender',current_timestamp(),'$program')";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
                 $showAlert = true;
-               
-              }
+
+                $MailHtml = "Your Password for Peer Learning Platform ID is: $password";
+                echo smtp_mailer($username, 'User Verification & Password', $MailHtml);
             }
-          else{
-            $showError = "Passwords do not match";
-          }
-      }
-  }
+        }
+    }
 
 
 
 
-  // $exists=false;
-  
+    // $exists=false;
+
+}
+function password_generate($chars)
+{
+    $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
+    return substr(str_shuffle($data), 0, $chars);
+}
+
+function smtp_mailer($to, $subject, $msg)
+{
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = 'tls';
+    $mail->Host = "smtp.gmail.com";
+    $mail->Port = 587;
+    $mail->IsHTML(true);
+    $mail->CharSet = 'UTF-8';
+    //$mail->SMTPDebug = 2; 
+    $mail->Username = "osamajamshed44@gmail.com";
+    $mail->Password = "vyfl olpl sbfb uiyf";
+    $mail->SetFrom("osamajamshed44@gmail.com");
+    $mail->Subject = $subject;
+    $mail->Body = $msg;
+    $mail->AddAddress($to);
+    $mail->SMTPOptions = array('ssl' => array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => false
+    ));
+    if (!$mail->Send()) {
+        return 0;
+    } else {
+        return 1;
+    }
 }
 ?>
 
@@ -69,13 +111,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <header>
         <div class="textflowforlogin">
             <div class="row">
-                <div
-                    style="background-color: #fff; color:blueviolet; top: 0px; position: absolute; left: 0px; right: 0px;">
+                <div style="background-color: #fff; color:blueviolet; top: 0px; position: absolute; left: 0px; right: 0px;">
                     <a style="text-decoration:none" href="../index.php">
                         <div style="margin-left: 50px; color: #7d2ae8; text-align: left;">
-                            <img src="assets/images/logoside.png"
-                                style="width: 400px; align-self: center; padding-top:5px; padding-bottom:0px;"
-                                alt="Logo" class="peerlogo">
+                            <img src="assets/images/logoside.png" style="width: 400px; align-self: center; padding-top:5px; padding-bottom:0px;" alt="Logo" class="peerlogo">
                         </div>
                     </a>
                 </div>
@@ -86,22 +125,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="container" style="margin: top 70px;">
         <div class="title">Registration</div>
         <?php
-        if($showAlert){
-        echo '<br>
+        if ($showAlert) {
+            echo '<br>
           <div class="alert-success">
           <span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span> 
-          <strong>Success!</strong> You can log in now.
+          <strong>Success!</strong> Password has been sent to your E-mail.
           </div>';
-        } 
+        }
 
-        if($showError){
-          echo '<br>
+        if ($showError) {
+            echo '<br>
           <div class="alert-error">
           <span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span> 
-          <strong>Error!</strong> '.$showError.'
+          <strong>Error!</strong> ' . $showError . '
           </div>';
-          } 
-    ?>
+        }
+        ?>
         <div class="content">
             <form action="/Peer Learning Platform/studentportal/student_registration.php" method="post">
                 <div class="user-details">
@@ -122,14 +161,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <span class="details">Phone Number</span>
                         <input type="text" name="number" placeholder="Enter your number" required>
                     </div>
-                    <div class="input-box">
-                        <span class="details">Password</span>
-                        <input type="password" name="password" placeholder="Enter your password" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Confirm Password</span>
-                        <input type="password" name="cpassword" placeholder="Confirm your password" required>
-                    </div>
+
                     <div class="input-box">
                         <span class="details">Program</span>
                         <input type="text" name="program" placeholder="Enter Program/Degree" required>

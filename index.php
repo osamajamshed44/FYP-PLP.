@@ -3,21 +3,21 @@
 
 <head>
     <style>
-    ::-webkit-scrollbar {
-        width: 17px;
-    }
+        ::-webkit-scrollbar {
+            width: 17px;
+        }
 
-    ::-webkit-scrollbar-track {
-        background-color: #e4e4e4;
-        border-radius: 100px;
-    }
+        ::-webkit-scrollbar-track {
+            background-color: #e4e4e4;
+            border-radius: 100px;
+        }
 
-    ::-webkit-scrollbar-thumb {
-        border-radius: 100px;
-        border: 5px solid transparent;
-        background-clip: content-box;
-        background-color: blueviolet;
-    }
+        ::-webkit-scrollbar-thumb {
+            border-radius: 100px;
+            border: 5px solid transparent;
+            background-clip: content-box;
+            background-color: blueviolet;
+        }
     </style>
 
     <meta charset="utf-8">
@@ -72,10 +72,9 @@
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="index.html" style="align-self: center;">
-                            <img src="assets/images/logoside.png"
-                                style="width: 420px; align-self: center; padding-top:10px; padding-bottom:10px;"
-                                alt="Logo" class="peerlogo">
+                        <a class="navbar-brand" href="#">
+
+                            <img src="assets/images/logoside.png" style="width: 400px; align-self: center; padding-top:10px; padding-bottom:10px;" alt="Logo" class="peerlogo">
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
@@ -378,23 +377,22 @@
     <section class="our-courses" id="courses">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading">
-                        <br>
-                        <br>
-                        <h2>Our Popular Courses</h2>
-                    </div>
+
+                <div class="section-heading">
+                    <br>
+                    <br>
+                    <h2>Our Popular Courses</h2>
                 </div>
-                   
+
                 <div class="col-lg-12">
                     <div class="owl-courses-item owl-carousel">
-                    <?php
+                        <?php
                         include 'database.php';
                         $sql = "SELECT * FROM `video_lectures` ORDER BY video_no DESC";
                         $result = mysqli_query($conn, $sql);
                         $i = 1;
-                        while($row = mysqli_fetch_assoc($result)){
-                            
+                        while ($row = mysqli_fetch_assoc($result)) {
+
                             $noResult = false;
                             $video_no = $row['video_no'];
                             $video_name = $row['video_name'];
@@ -406,12 +404,12 @@
                             $uploaded_by = $row['uploaded_by'];
                             echo '
                             <div class="item">
-                            <img src="assets/images/course-0'.$i.'.jpg" alt="">
+                            <img src="assets/images/course-0' . $i . '.jpg" alt="">
                             <div class="down-content">
-                                <h4>'.$video_name.'</h4>
+                                <h4>' . $video_name . '</h4>
                                 <div class="info">
                                     <div class="row">
-                                        <p style=" max-height: calc(3 * (1.2 * 16px)); text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">'.$video_desc.'</p>
+                                        <p style=" max-height: calc(3 * (1.2 * 16px)); text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">' . $video_desc . '</p>
                                     </div>
                                 </div>
                             </div>
@@ -419,8 +417,8 @@
 
                             $i++;
                         }
-                    ?>      
-                       
+                        ?>
+
                     </div>
                 </div>
             </div>
@@ -471,8 +469,7 @@
                 </div>
                 <div class="col-lg-6 align-self-center">
                     <div class="video">
-                        <a href="https://bahria.edu.pk/buic/cs/" target="_blank"><img src="assets/images/play-icon.png"
-                                alt=""></a>
+                        <a href="https://bahria.edu.pk/buic/cs/" target="_blank"><img src="assets/images/play-icon.png" alt=""></a>
                     </div>
                 </div>
             </div>
@@ -492,26 +489,22 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="name" type="text" id="name" placeholder="YOURNAME...*"
-                                                required="">
+                                            <input name="name" type="text" id="name" placeholder="YOURNAME...*" required="">
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*"
-                                                placeholder="YOUR EMAIL..." required="">
+                                            <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="YOUR EMAIL..." required="">
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="subject" type="text" id="subject" placeholder="SUBJECT...*"
-                                                required="">
+                                            <input name="subject" type="text" id="subject" placeholder="SUBJECT...*" required="">
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-12">
                                         <fieldset>
-                                            <textarea name="message" type="text" class="form-control" id="message"
-                                                placeholder="YOUR MESSAGE..." required=""></textarea>
+                                            <textarea name="message" type="text" class="form-control" id="message" placeholder="YOUR MESSAGE..." required=""></textarea>
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-12">
@@ -549,14 +542,15 @@
                 </div>
             </div>
         </div>
-        <footer class="" style="background-color:whitesmoke; ">
-            <div class="footer">
-                <p>Copyright © 2023 <b>Osama & Zain</b> All Rights Reserved.
-                    <br>
-                </p>
-            </div>
-        </footer>
+
     </section>
+    <footer class="">
+        <div class="footer">
+            <p>Copyright © 2023 <b>Osama & Zain</b> All Rights Reserved.
+                <br>
+            </p>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->
@@ -571,51 +565,51 @@
     <script src="assets/js/slick-slider.js"></script>
     <script src="assets/js/custom.js"></script>
     <script>
-    //according to loftblog tut
-    $('.nav li:first').addClass('active');
+        //according to loftblog tut
+        $('.nav li:first').addClass('active');
 
-    var showSection = function showSection(section, isAnimate) {
-        var
-            direction = section.replace(/#/, ''),
-            reqSection = $('.section').filter('[data-section="' + direction + '"]'),
-            reqSectionPos = reqSection.offset().top - 0;
-
-        if (isAnimate) {
-            $('body, html').animate({
-                    scrollTop: reqSectionPos
-                },
-                800);
-        } else {
-            $('body, html').scrollTop(reqSectionPos);
-        }
-
-    };
-
-    var checkSection = function checkSection() {
-        $('.section').each(function() {
+        var showSection = function showSection(section, isAnimate) {
             var
-                $this = $(this),
-                topEdge = $this.offset().top - 80,
-                bottomEdge = topEdge + $this.height(),
-                wScroll = $(window).scrollTop();
-            if (topEdge < wScroll && bottomEdge > wScroll) {
-                var
-                    currentId = $this.data('section'),
-                    reqLink = $('a').filter('[href*=\\#' + currentId + ']');
-                reqLink.closest('li').addClass('active').
-                siblings().removeClass('active');
+                direction = section.replace(/#/, ''),
+                reqSection = $('.section').filter('[data-section="' + direction + '"]'),
+                reqSectionPos = reqSection.offset().top - 0;
+
+            if (isAnimate) {
+                $('body, html').animate({
+                        scrollTop: reqSectionPos
+                    },
+                    800);
+            } else {
+                $('body, html').scrollTop(reqSectionPos);
             }
+
+        };
+
+        var checkSection = function checkSection() {
+            $('.section').each(function() {
+                var
+                    $this = $(this),
+                    topEdge = $this.offset().top - 80,
+                    bottomEdge = topEdge + $this.height(),
+                    wScroll = $(window).scrollTop();
+                if (topEdge < wScroll && bottomEdge > wScroll) {
+                    var
+                        currentId = $this.data('section'),
+                        reqLink = $('a').filter('[href*=\\#' + currentId + ']');
+                    reqLink.closest('li').addClass('active').
+                    siblings().removeClass('active');
+                }
+            });
+        };
+
+        $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function(e) {
+            e.preventDefault();
+            showSection($(this).attr('href'), true);
         });
-    };
 
-    $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function(e) {
-        e.preventDefault();
-        showSection($(this).attr('href'), true);
-    });
-
-    $(window).scroll(function() {
-        checkSection();
-    });
+        $(window).scroll(function() {
+            checkSection();
+        });
     </script>
 </body>
 

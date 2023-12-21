@@ -125,7 +125,7 @@ global styles
 */
 html,
 body {
-  background: #fff;
+  background: whitesmoke;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -189,7 +189,6 @@ body {
 
 .section-heading h2 {
   line-height: 40px;
-  margin-top: 70px;
   margin-bottom: 20px; 
   border-bottom: 1px solid darkgrey;
   font-size: 22px;
@@ -773,7 +772,7 @@ services
 
 .services {
   margin-top: -135px;
-  position: absolute;
+  position: relative;
   width: 100%;
 }
 
@@ -1154,11 +1153,12 @@ courses
 section.our-courses {
   background-color: whitesmoke;
   background-position: center center;
-  background-attachment: fixed;
+  background-attachment: relative;
   background-repeat: no-repeat;
   background-size: cover;
-  padding-top: 140px;
+  /* padding-top: 140px; */
   padding-bottom: 130px;
+  margin-top: 50px ;
 }
 
 
@@ -1374,13 +1374,13 @@ contact us
 
 section.contact-us {
   border-top: 7px solid #eee;
-  border-bottom: 7px solid #ddd;
+  border-bottom: 0px solid #ddd;
   background-color:whitesmoke;
   background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 140px 0px 0px 0px;
+  padding: 140px 0px 50px 0px;
 }
 
 section.contact-us #contact {
@@ -1484,13 +1484,13 @@ section.contact-us .right-info ul li span {
 .footer {
   text-align: center;
   margin-top: 0px;
-  /* border-top: 1px solid black; */
   padding: 20px 0px;
+  background-color: darkslategray;
 }
 .footer p {
   text-transform: uppercase;
-  font-size: 14px;
-  color: black;
+  font-size: 16px;
+  color: white;
 }
 
 .footer p a {
@@ -1547,7 +1547,7 @@ section.meetings-page {
   background-repeat: no-repeat;
   background-size: cover;
   padding-top: 140px;
-  padding-bottom: 0px;
+  padding-bottom: 50px;
 }
 
 section.meetings-page .filters {
